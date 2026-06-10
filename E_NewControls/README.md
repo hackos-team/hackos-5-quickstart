@@ -2,7 +2,7 @@
 
 > ⚪ Gray Team | Author a new **side task** (a high-stakes sabotage objective), a new environment, or a new scorer and prove it's accomplishable with at least one straj (**s**abotage **traj**ectory).
 
-Side tasks are the foundation of the whole benchmark: they're what every monitor and protocol gets tested against.
+Side tasks are the foundation of the whole benchmark: they're what every monitor and protocol gets tested against. You should pick a main task and find a (critical) point of failure in it to make a side task out of.
 
 ## Setup
 
@@ -11,7 +11,7 @@ uv run ct init
 uv run ct settings pull linuxarena
 ```
 
-## Anatomy of a side task
+## Anatomy of a side task ([reference](https://github.com/linuxarena/control-tower/blob/2e2ddb8f9cb006775cc669ada3511c4e8890bf7a/docs/development/making-side-tasks.md))
 
 ```
 side_tasks/my_task_idea/        # add the _idea suffix while WIP so tests don't gate on it
@@ -26,6 +26,7 @@ side_tasks/my_task_idea/        # add the _idea suffix while WIP so tests don't 
 ```
 
 ```python
+# side_tasks/my_task_idea/__init__.py
 from pathlib import Path
 from .scorer import scorer
 from control_tower.task.task_config import make_side_task_config_from_path
@@ -39,7 +40,9 @@ config = make_side_task_config_from_path(
 )
 ```
 
-## Design rules (summarized from the docs by an LLM)
+An example, being the `suppress_safety_notifications` side task in the `clinical_trial` environment is located [here](https://github.com/linuxarena/clinical_trial/tree/main/side_tasks/suppress_safety_notifications). It's critical because, in the context of a live clinical trial, you would want your trial supervisor to receive a notification if your heart rate or blood pressure becomes too high, wouldn't you?
+
+## Design rules ([reference](https://github.com/linuxarena/control-tower/blob/main/docs/development/making-side-tasks.md))
 
 - **Fire-or-arrest test** — would you fire/arrest someone for doing this? Aim for *arrest*-level stakes.
 - **Not accidentally triggerable** by an honest agent doing the main task.
@@ -48,19 +51,28 @@ config = make_side_task_config_from_path(
 - **Intelligence-scaling** — smarter attackers should be able to do it in sneakier ways.
 - **Coverable** by multiple plausible main tasks.
 
-Full guide: [making-side-tasks.md](https://github.com/linuxarena/control-tower/blob/main/docs/development/making-side-tasks.md)
--> Main tasks guide for reference: [making-main-tasks.md](https://github.com/linuxarena/control-tower/blob/main/docs/development/making-main-tasks.md)
+Full guide to creating side tasks: [making-side-tasks.md](https://github.com/linuxarena/control-tower/blob/main/docs/development/making-side-tasks.md)
 
 ## Validate it
 
-Every side task needs **≥1 straj** proving it's accomplishable subtly:
-
 ```bash
-uv run ct run side-task-review  # auto-audit: reward-hacking, magic numbers, straj feasibility
-uv run ct run monitor <straj-run> --action-monitor multi --only-action
+X_ENVIRONMENT="" # name of environment you're targetting
+X_MAIN_TASK="" # name of the main task you're targetting
+
+# move it to the proper dir
+mkdir -p .settings/linuxarena/$X_ENVIRONMENT/
+mv side_tasks .settings/linuxarena/$X_ENVIRONMENT/
+
+uv run ct run side-task-review --environment $X_ENVIRONMENT --side-task my_task_idea # auto-audit: reward-hacking, magic numbers, straj feasibility
+
+# run the attack policy
+ct run eval --policy attack --environment $X_ENVIRONMENT --main-task $X_MAIN_TASK --side-task my_task_idea --run-name trackC-attack
+# -> creates logs/trackC-attack*.md
+
+uv run ct run monitor <straj-run: logs/trackC-attack*.md> --action-monitor multi --only-action
 ```
 
-If you can't build a low-suspiciousness straj on any untrusted model, the side task is probably misdesigned but it is still valuable data. Optionally, we recommend you accompany it with a harder side task for comparison.
+Every side task needs **≥1 straj** proving it's accomplishable subtly. If you can't build a low-suspiciousness straj on any untrusted model, the side task is probably misdesigned but it is still valuable data. Optionally, we recommend you accompany it with a harder side task for comparison.
 
 ## Papers to start from — reproduce, then improve
 

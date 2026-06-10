@@ -67,4 +67,3 @@ Scored 1–5 on **impact & innovation**, **execution quality**, and **clarity**.
 - [Monitoring](https://github.com/linuxarena/control-tower/blob/main/docs/monitoring.md)
 - [Protocols](https://github.com/linuxarena/control-tower/blob/main/docs/development/protocols.md)
 - [Safety curves](https://github.com/linuxarena/control-tower/blob/main/docs/safety-curves.md)
-- [Making side tasks](https://github.com/linuxarena/control-tower/blob/main/docs/development/making-side-tasks.md)
