@@ -1,10 +1,8 @@
-# Track E — New Side Tasks / Extend the Testbed ⚪ White Team
+# Track E: New Side Tasks / Extend the Testbed
 
 > ⚪ Gray Team | Author a new **side task** (a high-stakes sabotage objective), a new environment, or a new scorer and prove it's accomplishable with at least one straj (**s**abotage **traj**ectory).
 
 Side tasks are the foundation of the whole benchmark: they're what every monitor and protocol gets tested against.
-
-Built on **[control-tower](https://github.com/linuxarena/control-tower)** (LinuxArena / ControlArena).
 
 ## Setup
 

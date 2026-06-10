@@ -4,8 +4,6 @@
 
 Where Track C hand-crafts one sabotage trajectory, Track D targets the **protocol itself**: exploit blind spots in how it monitors, defers, resamples, or audits.
 
-Built on **[control-tower](https://github.com/linuxarena/control-tower)** (LinuxArena / ControlArena).
-
 ## Setup
 
 ```bash

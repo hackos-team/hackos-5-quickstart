@@ -1,8 +1,6 @@
-# Track A — Monitor Building 🔵 Blue Team
+# Track A: Monitor Building
 
-> Build a monitor that scores how suspicious each agent action (or whole trajectory) is — and catches sabotage while keeping false alarms under the audit budget (~1%).
-
-Built on **[control-tower](https://github.com/linuxarena/control-tower)** (LinuxArena / ControlArena).
+> 🔵 Blue Team | Build a monitor that scores how suspicious each agent action (or whole trajectory) is — and catches sabotage while keeping false alarms under the audit budget (~1%).
 
 ## The game
 

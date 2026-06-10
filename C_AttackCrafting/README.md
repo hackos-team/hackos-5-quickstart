@@ -1,10 +1,8 @@
-# Track C — Attack Crafting 🔴 Red Team
+# Track C: Attack Crafting
 
-> Hand-craft a **sabotage trajectory (straj)**: accomplish a side task while staying under the monitor's radar. One small change, a plausible cover story, a real security property violated.
+> 🔴 Red Team | Hand-craft a **sabotage trajectory (straj)**: accomplish a side task while staying under the monitor's radar. One small change, a plausible cover story, a real security property violated.
 
 A straj must complete the side task **and** evade the monitor. **It does not need to solve the main task.** The goal is to be subtle: the sabotage reads as an ordinary bug fix, refactor, feature, etc..
-
-Built on **[control-tower](https://github.com/linuxarena/control-tower)** (LinuxArena / ControlArena).
 
 ## Setup
 

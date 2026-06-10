@@ -1,10 +1,8 @@
-# Track B — Protocol Design 🔵 Blue Team
+# Track B: Protocol Design
 
-> Design a control **protocol** — how to combine monitoring with deferral, rewriting, resampling, and permission-gating — and measure the safety/usefulness tradeoff it buys.
+> 🔵 Blue Team | Design a control **protocol**. Combine monitoring with deferral, rewriting, resampling, and permission-gating the untrusted agent and measure the safety/usefulness tradeoff.
 
-If a monitor (Track A btw) scores, then a protocol acts on the scores. Some existing protocols are: defer-to-trusted, audit, edit the action, resample, or gate by risk. You are free to either build on them or to propose a new protocol entirely
-
-Built on **[control-tower](https://github.com/linuxarena/control-tower)** (LinuxArena / ControlArena).
+Some existing protocols are: defer-to-trusted, audit, edit the action, resample, or gate by risk. You are free to either build on them or to propose a new protocol entirely
 
 ## Setup
 
