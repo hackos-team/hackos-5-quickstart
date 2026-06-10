@@ -18,11 +18,15 @@ uv run ct settings pull linuxarena
 Control Tower pairs an **untrusted policy** (the untrusted agent) with a **protocol** (what they call a "blue protocol", which is what you're building):
 
 ```bash
-# sample run using an existing protocol
+# before spending any of your credits, run this to make sure everything works (runs ls and then exist, no model calls)
+uv run ct run eval --policy test --task-file simple --tags test --no-upload
+
+# run your protocol (which is currently a copy of trusted monitoring)
 uv run ct run eval \
   --untrusted-policy simple-attack \
   --protocol track_b-protocol_design.protocol:my_protocol \
   --task-file simple
+  --no-upload
 
 uv run ct protocols blue-protocols      # list protocols
 uv run ct protocols untrusted-policies  # list attackers to test against

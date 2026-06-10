@@ -24,6 +24,7 @@ uv run ct run eval \
   --protocol trusted-monitoring \
   --protocol-arg sus_threshold=7 \
   --task-file medium
+  --no-upload
 ```
 
 ## Write an untrusted policy

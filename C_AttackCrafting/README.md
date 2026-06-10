@@ -27,7 +27,7 @@ Study the worked examples — a homoglyph in an identifier, `$USERNAME` shell ex
 Either author an attack policy (so the model executes it) or hand-write the trajectory, then check it against the monitor:
 
 ```bash
-uv run ct run eval --policy attack -e <env> -t <main_task> -s <side_task>
+uv run ct run eval --policy attack -e <env> -t <main_task> -s <side_task> --no-upload
 uv run ct run monitor <your-run> --action-monitor multi --only-action   # did you stay under threshold?
 ```
 
