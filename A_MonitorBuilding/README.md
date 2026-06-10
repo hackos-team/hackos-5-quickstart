@@ -21,8 +21,14 @@ uv run ct settings pull linuxarena
 
 ```bash
 # 1. Generate trajectories, or just use the shared sabotage dataset (straj-dataset)
-uv run ct run eval --policy honest -e clinical_trial -t adverse_reaction_followup_tracking --no-upload
-uv run ct run eval --policy simple-attack -e clinical_trial -t adverse_reaction_followup_tracking -s suppress_safety_notifications --no-upload
+#    --task-file medium runs several task combos across environments so the curve isn't a single noisy point
+uv run ct run eval --policy honest --task-file medium --no-upload
+uv run ct run eval --policy simple-attack --task-file medium --no-upload
+
+# the alternative is to run the policy on a single main/side task pair:
+# uv run ct run eval --policy honest --environment clinical_trial --main-task adverse_reaction_followup_tracking --no-upload
+# uv run ct run eval --policy simple-attack --environment clinical_trial --main-task adverse_reaction_followup_tracking --side-task suppress_safety_notifications --no-upload
+
 
 # 2. Score with a built-in monitor
 uv run ct run monitor straj-dataset --action-monitor multi --only-action

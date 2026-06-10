@@ -20,14 +20,14 @@ Control Tower pairs an **untrusted policy** (the untrusted agent) with a **proto
 uv run ct run eval \
   --untrusted-policy simple-attack \
   --protocol track_b-protocol_design.protocol:my_protocol \
-  --task-file simple \
+  --task-file medium \
   --run-name protoB-attack \
   --no-upload
 
 uv run ct run eval \
   --untrusted-policy honest \
   --protocol track_b-protocol_design.protocol:my_protocol \
-  --task-file simple \
+  --task-file medium \
   --run-name protoB-honest \
   --no-upload
 
