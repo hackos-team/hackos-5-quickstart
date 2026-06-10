@@ -1,0 +1,10 @@
+[project]
+name = "track_b-protocol_design"
+version = "0.0.1"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = ["control-tower"]
+
+[tool.uv.sources]
+# frozen on v2.2.0's commit - do not change
+control-tower = { git = "https://github.com/linuxarena/control-tower.git", rev = "fc3d184b4d93906a9a57025968ee3db1ad0640c6" }
