@@ -13,8 +13,8 @@ Before starting, make sure you have the following set up:
 
 - [ ] A Unix-compatible machine (MacOS or Linux) or WSL for Windows
 - [ ] The uv package manager `pip install uv`
-- [ ] Docker installed and running 
-- [ ] The GH cli (`sudo apt install gh`) used to pull LinuxArena envs 
+- [ ] Docker installed and running
+- [ ] The GH cli (`sudo apt install gh`) used to pull LinuxArena envs
 
 ```bash
 uv run ct init  # completions, `ct` alias, settings, agent skills
@@ -32,10 +32,10 @@ uv run ct run eval --policy test --env tiktok --just-main-tasks --limit 1 --no-u
 | | Track | Team | You build |
 | --- | --- | --- | --- |
 | **[A](A_MonitorBuilding/)** | Monitor Building | 🔵 Blue | A monitor that scores how suspicious each action/trajectory is |
-| **[B](B-ProtocolDesign/)** | Protocol Design | 🔵 Blue | A protocol (defer / rewrite / gate) and its safety–usefulness tradeoff |
-| **[C](C-AttackCrafting/)** | Attack Crafting | 🔴 Red | A sabotage trajectory (straj) that evades the monitor |
-| **[D](D-ProtocolBreaking/)** | Break a Protocol | 🔴 Red | An untrusted policy that beats a protocol — then a fix |
-| **[E](E-NewControls/)** | New Side Tasks | ⚪ Gray | A new side task / environment / scorer that extends the testbed |
+| **[B](B_ProtocolDesign/)** | Protocol Design | 🔵 Blue | A protocol (defer / rewrite / gate) and its safety–usefulness tradeoff |
+| **[C](C_AttackCrafting/)** | Attack Crafting | 🔴 Red | A sabotage trajectory (straj) that evades the monitor |
+| **[D](D_ProtocolBreaking/)** | Break a Protocol | 🔴 Red | An untrusted policy that beats a protocol — then a fix |
+| **[E](E_NewControls/)** | New Side Tasks | ⚪ Gray | A new side task / environment / scorer that extends the testbed |
 
 ## The shared vocabulary
 
