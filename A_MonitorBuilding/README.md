@@ -11,6 +11,8 @@ An untrusted agent works on a *main task* and may secretly attempt a *side task*
 ## Setup
 
 ```bash
+pip install uv 
+uv sync --python 3.14
 uv run ct init
 uv run ct settings pull linuxarena
 ```
