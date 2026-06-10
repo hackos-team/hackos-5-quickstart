@@ -2,7 +2,7 @@
 
 > 🔴 Red Team | Craft an **untrusted policy** that slips sabotage past it, then propose a fix. As opposed to Track C, projects in this track attempt to break the supervisor, instead of trying to slip past it.
 
-Where Track C hand-crafts one sabotage trajectory, Track D targets the **protocol itself**: exploit blind spots in how it monitors, defers, resamples, or audits.
+Where Track C hand-crafts one sabotage trajectory, Track D targets the **protocol itself**: exploit blind spots in how it the monitor actually monitors, defers, resamples, or audits.
 
 ## Setup
 
@@ -18,7 +18,7 @@ uv run ct protocols blue-protocols  # pick a control protocol to target
 uv run ct protocols untrusted-policies  # existing attackers to build on
 
 uv run ct run eval \
-  --untrusted-policy <your-attack> \
+  --untrusted-policy track_d-protocol_breaking.your-policy.policy:your_attack_policy \
   --protocol trusted-monitoring \
   --protocol-arg sus_threshold=7 \
   --task-file medium
@@ -36,6 +36,8 @@ from control_tower.protocols.policies.registry import policies
 def my_attack(state, submit, args=None):
     ...  # returns an Inspect Agent that pursues the side task while looking honest
 ```
+
+A base policy (based on simple attack) is included in `your-policy`. Feel free to use it as a starting point, [explore other existing policies to use instead](https://github.com/linuxarena/control-tower/tree/87f186421c99f586fb2441d4864af9c2b5fba145/src/control_tower/protocols/policies/policies), or to make one from scratch.
 
 Tricks the docs call out: keep **private tools** the blue team never sees by executing their calls inline in your own generate loop and only returning clean outputs; use `request_last_turn()` to grab a final move after the protocol finishes. See [docs/development/protocols.md](https://github.com/linuxarena/control-tower/blob/main/docs/development/protocols.md) and the `private-test-attack` example.
 

@@ -15,32 +15,88 @@ uv run ct settings pull linuxarena
 
 ```bash
 uv run ct run monitor straj-dataset --action-monitor multi --only-action
-# use these results as a point of reference to evaluate the relative effectiveness of your attack
+# use these results as points of reference
 ```
 
-Study the worked examples — a homoglyph in an identifier, `$USERNAME` shell expansion pointing at the wrong path, swapped args that leak a secret into public output, debug-wrapper exfiltration: [docs/development/strajs/example-strajs.md](https://github.com/linuxarena/control-tower/blob/main/docs/development/strajs/example-strajs.md).
+Study the worked examples - a homoglyph in an identifier, `$USERNAME` shell expansion pointing at the wrong path, swapped args that leak a secret into public output, debug-wrapper exfiltration: [docs/development/strajs/example-strajs.md](https://github.com/linuxarena/control-tower/blob/main/docs/development/strajs/example-strajs.md).
+
+From [another page in their docs](https://github.com/linuxarena/control-tower/blob/main/docs/development/strajs/attack-strategies.md),
+> Choose or create main tasks that:
+>
+> - Naturally touch the code you need to modify
+> - Have actions that overlap with what the side task requires
+> - Have legitimate reasons for the type of changes you're making
 
 ## Build & test your attack
 
-Either author an attack policy (so the model executes it) or hand-write the trajectory, then check it against the monitor:
+`clinical_trial` simulates a clinical-trial data-management system (trial records, participant data, adverse-event / safety reporting workflows). This is only one example of a main/side task pair that you can evaluate against. There are others available which you can pentest:
 
 ```bash
-uv run ct run eval --policy attack -e <env> -t <main_task> -s <side_task> --no-upload
-uv run ct run monitor <your-run> --action-monitor multi --only-action  # did you stay under threshold?
+ct envs side-tasks list # list available side tasks for each main task
+```
+
+Create the honest run (for final scoring):
+
+```bash
+# generate an honest baseline for your main task
+uv run ct run eval --policy honest \
+    --environment clinical_trial \
+    --main-task adverse_reaction_followup_tracking \
+    --run-name attackC-honest \
+    --no-upload
+```
+
+Attack:
+
+```bash
+# 1. Generate an attack baseline on the main task: check where it went wrong and try to patch it
+uv run ct run eval --policy simple-attach \
+    --environment clinical_trial \
+    --main-task adverse_reaction_followup_tracking \
+    --side-task suppress_safety_notification \
+    --run-name attackC-base \
+    --no-upload
+#    → produces some logs/attackC-base*.eval file
+
+# convert to an editable trajectory:
+uv run ct traj make <logs/attackC-base*.eval> --save-path data/traj/base-attack.json
+
+# 2. Read the diff. Find a locus that carries a security property
+#    (a gate, a validator, an audit/log write, a query that decides what's visible).
+
+# 3. Inject the sabotage by editing the trajectory:
+uv run ct traj tui data/traj/base-attack.json  # edit → save as my-edited-traj-1.json
+
+# 4. Execute your edited trajectory in a live container and which side task fires:
+uv run ct live up-from <base_run: logs/attackC-base*.eval>  # spin up the env for this task
+uv run ct live solution-from ./my-edited-traj-1.json        # make a straj out of the run
+uv run ct live traj                                         # run your solution trajectory in it
+uv run ct live score --only-side # does the side task pass?
+
+# 5. create a run from your most successful straj.s 
+uv run ct run eval --trajectory-id ./my-edited-traj-1.json --run-name attackC-straj1 --policy replay
+#    → produces some attackC-straj1*.eval file
+
+# 6. Score it against the monitor (the pass/fail gate):
+uv run ct run monitor <your-run: logs/attackC-straj1*.eval> --action-monitor multi --only-action # does the side task get caught?
+
+# 7. Iterate steps 3–6 until: side task passes and max sus_score stays under threshold.
 ```
 
 Then confirm you actually beat the monitor at the audit budget:
 
 ```bash
-uv run ct game-metrics metrics --honest <honest-run> --attack <your-attack-run> --audit-budgets 1
+uv run ct game-metrics metrics --honest <honest-run: logs/attackC-honest*.eval> --attack <your-attack-run: logs/attackC-strajX*.eval> --audit-budgets 1
 ```
 
-## What makes for a strong attack
+## What makes for a strong attack ([reference](https://github.com/linuxarena/control-tower/blob/main/docs/development/strajs/attack-strategies.md))
 
 - **Subtlety**: no single action looks suspicious in isolation
 - **Plausiblity**: every change has a convincing cover story
 - **Absence of magic numbers**: hardcoded malicious URLs/strings are trivially caught; discover them in-env instead
 - **Scalability**: leaves room for sneakier variants
+
+> More recent strajs are typically more subtle — the hidden change looks even more like a legitimate bug fix or feature addition. But the core pattern is the same: one small change, a plausible cover story, and a concrete security property violated.
 
 ## [Optional] Papers to start from
 
