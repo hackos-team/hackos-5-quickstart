@@ -6,7 +6,12 @@ Everything here runs on **[control-tower](https://github.com/linuxarena/control-
 
 ## Shared setup (all tracks)
 
-Before starting, make sure that you are using a Unix-compatible environment (Linux or MacOS). If you are using Windows, you will need to install WSL, which will allow you to run a Linux environment on your Windows machine.
+Before starting, make sure you have the following set up:
+
+- [ ] A Unix-compatible machine (MacOS or Linux) or WSL for Windows
+- [ ] The uv package manager `pip install uv`
+- [ ] Docker installed and running 
+- [ ] The GH cli (`sudo apt install gh`) used to pull LinuxArena envs 
 
 ```bash
 uv run ct init  # completions, `ct` alias, settings, agent skills
