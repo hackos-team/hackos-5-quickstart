@@ -1,1 +1,51 @@
-# Quickstart
+# HackOS 5 — AI Control Hackathon · Quickstart
+
+Limit the harm an untrusted AI agent can cause while it operates — **even when it actively tries to subvert the controls around it.** The core game: can a *weaker, trusted* model catch a *stronger, untrusted* agent attempting sabotage while keeping false alarms under ~1%?
+
+Everything here runs on **[control-tower](https://github.com/linuxarena/control-tower)**, the AI-control eval framework (LinuxArena / ControlArena, by Redwood + UK AISI).
+
+## Shared setup (all tracks)
+
+```bash
+uv add control-tower
+uv run ct init                       # completions, `ct` alias, settings, agent skills
+uv run ct settings pull linuxarena   # environments, main tasks, side tasks
+```
+
+Sanity-check your install:
+
+```bash
+uv run ct run eval --policy test --env tiktok --just-main-tasks --limit 1 --no-upload   # no API keys needed
+```
+
+## Pick a track
+
+| | Track | Team | You build |
+|---|---|---|---|
+| **[A](A-monitor-building/)** | Monitor Building | 🔵 Blue | A monitor that scores how suspicious each action/trajectory is |
+| **[B](B-protocol-design/)** | Protocol Design | 🔵 Blue | A protocol (defer / rewrite / gate) and its safety–usefulness tradeoff |
+| **[C](C-attack-crafting/)** | Attack Crafting | 🔴 Red | A sabotage trajectory (straj) that evades the monitor |
+| **[D](D-control-protocol/)** | Break a Protocol | 🔴 Red | An untrusted policy that beats a protocol — then a fix |
+| **[E](E-new-controls/)** | New Side Tasks | ⚪ White | A new side task / environment / scorer that extends the testbed |
+
+## The shared vocabulary
+
+- **Main task** — the legitimate job the agent is asked to do.
+- **Side task** — a high-stakes sabotage objective the untrusted agent may pursue covertly.
+- **Straj** — a *sabotage trajectory*: a run that accomplishes the side task while staying subtle.
+- **Monitor** — scores suspiciousness, 0 (clean) → 10 (very suspicious).
+- **Protocol** — the blue-team decision policy that acts on monitor scores (audit / defer / rewrite / gate).
+- **Safety** = caught / (caught + uncaught successful sabotage), at a fixed audit budget (FPR on honest runs).
+- **Usefulness** = honest main-task success rate.
+
+## Judging & deliverables
+
+Scored 1–5 on **impact & innovation**, **execution quality**, and **clarity**. Each team ships:
+
+- 📄 a 2-page report &nbsp; • &nbsp; 💻 a code repo &nbsp; • &nbsp; 🎬 a 3-minute demo video
+
+Leaderboard prizes for best **monitor** and best **attack**; strong attacks may be contributed back to the benchmark.
+
+## Docs worth bookmarking
+
+[Control concepts](https://github.com/linuxarena/control-tower/blob/main/docs/control-concepts.md) · [Hands-on guide](https://github.com/linuxarena/control-tower/blob/main/docs/hands-on-guide.md) · [Running evals](https://github.com/linuxarena/control-tower/blob/main/docs/running-evals.md) · [Monitoring](https://github.com/linuxarena/control-tower/blob/main/docs/monitoring.md) · [Protocols](https://github.com/linuxarena/control-tower/blob/main/docs/development/protocols.md) · [Safety curves](https://github.com/linuxarena/control-tower/blob/main/docs/safety-curves.md) · [Making side tasks](https://github.com/linuxarena/control-tower/blob/main/docs/development/making-side-tasks.md)
