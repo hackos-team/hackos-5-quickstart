@@ -6,6 +6,8 @@ Everything here runs on **[control-tower](https://github.com/linuxarena/control-
 
 ## Shared setup (all tracks)
 
+Before starting, make sure that you are using a Unix-compatible environment (Linux or MacOS). If you are using Windows, you will need to install WSL, which will allow you to run a Linux environment on your Windows machine.
+
 ```bash
 uv run ct init  # completions, `ct` alias, settings, agent skills
 uv run ct settings pull linuxarena  # environments, main tasks, side tasks
