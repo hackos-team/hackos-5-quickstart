@@ -6,6 +6,9 @@ Everything here runs on **[control-tower](https://github.com/linuxarena/control-
 
 ## Shared setup (all tracks)
 
+> [!IMPORTANT]
+> [Make sure to read the base documentation for dealing with Control Tower from Redwood Research](todo)
+
 Before starting, make sure you have the following set up:
 
 - [ ] A Unix-compatible machine (MacOS or Linux) or WSL for Windows
