@@ -50,8 +50,14 @@ Scored 1–5 on **impact & innovation**, **execution quality**, and **clarity**.
 - 🎬 a 3-minute demo (either a video or in person)
   - if it's a video, it can be an unlisted youtube link, public google drive link, etc.. Just make sure that we can access it.
 
-Leaderboard prizes for best **monitor** and best **attack**; strong attacks may be contributed back to the benchmark.
+1st-2nd-3rd place for the best monitors and best attack respectively, and "best side tasks" award.
 
-## Docs worth bookmarking
+## Docs worth skimming at least once
 
-[Control concepts](https://github.com/linuxarena/control-tower/blob/main/docs/control-concepts.md) · [Hands-on guide](https://github.com/linuxarena/control-tower/blob/main/docs/hands-on-guide.md) · [Running evals](https://github.com/linuxarena/control-tower/blob/main/docs/running-evals.md) · [Monitoring](https://github.com/linuxarena/control-tower/blob/main/docs/monitoring.md) · [Protocols](https://github.com/linuxarena/control-tower/blob/main/docs/development/protocols.md) · [Safety curves](https://github.com/linuxarena/control-tower/blob/main/docs/safety-curves.md) · [Making side tasks](https://github.com/linuxarena/control-tower/blob/main/docs/development/making-side-tasks.md)
+- [Control concepts](https://github.com/linuxarena/control-tower/blob/main/docs/control-concepts.md)
+- [Hands-on guide](https://github.com/linuxarena/control-tower/blob/main/docs/hands-on-guide.md)
+- [Running evals](https://github.com/linuxarena/control-tower/blob/main/docs/running-evals.md)
+- [Monitoring](https://github.com/linuxarena/control-tower/blob/main/docs/monitoring.md)
+- [Protocols](https://github.com/linuxarena/control-tower/blob/main/docs/development/protocols.md)
+- [Safety curves](https://github.com/linuxarena/control-tower/blob/main/docs/safety-curves.md)
+- [Making side tasks](https://github.com/linuxarena/control-tower/blob/main/docs/development/making-side-tasks.md)
