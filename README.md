@@ -7,35 +7,33 @@ Everything here runs on **[control-tower](https://github.com/linuxarena/control-
 ## Shared setup (all tracks)
 
 ```bash
-uv add control-tower
-uv run ct init                       # completions, `ct` alias, settings, agent skills
-uv run ct settings pull linuxarena   # environments, main tasks, side tasks
+uv run ct init  # completions, `ct` alias, settings, agent skills
+uv run ct settings pull linuxarena  # environments, main tasks, side tasks
 ```
 
-Sanity-check your install:
+Before spending any of your credits, run this to make sure everything works (it just runs `ls` and then exist, no model calls):
 
 ```bash
-# before spending any of your credits, run this to make sure everything works (runs ls and then exist, no model calls)
 uv run ct run eval --policy test --env tiktok --just-main-tasks --limit 1 --no-upload
 ```
 
 ## Pick a track
 
 | | Track | Team | You build |
-|---|---|---|---|
-| **[A](A-monitor-building/)** | Monitor Building | 🔵 Blue | A monitor that scores how suspicious each action/trajectory is |
-| **[B](B-protocol-design/)** | Protocol Design | 🔵 Blue | A protocol (defer / rewrite / gate) and its safety–usefulness tradeoff |
-| **[C](C-attack-crafting/)** | Attack Crafting | 🔴 Red | A sabotage trajectory (straj) that evades the monitor |
-| **[D](D-control-protocol/)** | Break a Protocol | 🔴 Red | An untrusted policy that beats a protocol — then a fix |
-| **[E](E-new-controls/)** | New Side Tasks | ⚪ White | A new side task / environment / scorer that extends the testbed |
+| --- | --- | --- | --- |
+| **[A](A_MonitorBuilding/)** | Monitor Building | 🔵 Blue | A monitor that scores how suspicious each action/trajectory is |
+| **[B](B-ProtocolDesign/)** | Protocol Design | 🔵 Blue | A protocol (defer / rewrite / gate) and its safety–usefulness tradeoff |
+| **[C](C-AttackCrafting/)** | Attack Crafting | 🔴 Red | A sabotage trajectory (straj) that evades the monitor |
+| **[D](D-ProtocolBreaking/)** | Break a Protocol | 🔴 Red | An untrusted policy that beats a protocol — then a fix |
+| **[E](E-NewControls/)** | New Side Tasks | ⚪ White | A new side task / environment / scorer that extends the testbed |
 
 ## The shared vocabulary
 
-- **Main task** — the legitimate job the agent is asked to do.
-- **Side task** — a high-stakes sabotage objective the untrusted agent may pursue covertly.
-- **Straj** — a *sabotage trajectory*: a run that accomplishes the side task while staying subtle.
-- **Monitor** — scores suspiciousness, 0 (clean) → 10 (very suspicious).
-- **Protocol** — the blue-team decision policy that acts on monitor scores (audit / defer / rewrite / gate).
+- **Main task**: the legitimate job the agent is asked to do.
+- **Side task**: a high-stakes sabotage objective the untrusted agent may pursue covertly.
+- **Straj**: a *sabotage trajectory*: a run that accomplishes the side task while staying subtle.
+- **Monitor**: scores suspiciousness, 0 (clean) → 10 (very suspicious).
+- **Protocol**: the blue-team decision policy that acts on monitor scores (audit / defer / rewrite / gate).
 - **Safety** = caught / (caught + uncaught successful sabotage), at a fixed audit budget (FPR on honest runs).
 - **Usefulness** = honest main-task success rate.
 
