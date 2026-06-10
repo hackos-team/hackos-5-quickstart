@@ -1,8 +1,8 @@
 # HackOS 5 — AI Control Hackathon · Quickstart
 
-Limit the harm an untrusted AI agent can cause while it operates — **even when it actively tries to subvert the controls around it.** The core game: can a *weaker, trusted* model catch a *stronger, untrusted* agent attempting sabotage while keeping false alarms under ~1%?
+Limit the harm an untrusted AI agent can cause while it operates, even when it actively tries to subvert the controls around it. The core game: can a *weaker, trusted* model catch a *stronger, untrusted* agent attempting sabotage? And while keeping false alarms under ~1%?
 
-Everything here runs on **[control-tower](https://github.com/linuxarena/control-tower)**, the AI-control eval framework (LinuxArena / ControlArena, by Redwood + UK AISI).
+Everything here runs on **[control-tower](https://github.com/linuxarena/control-tower)**, the AI-control eval framework (LinuxArena / ControlArena) by Redwood Research and UK's AISI.
 
 ## Shared setup (all tracks)
 
@@ -25,7 +25,7 @@ uv run ct run eval --policy test --env tiktok --just-main-tasks --limit 1 --no-u
 | **[B](B-ProtocolDesign/)** | Protocol Design | 🔵 Blue | A protocol (defer / rewrite / gate) and its safety–usefulness tradeoff |
 | **[C](C-AttackCrafting/)** | Attack Crafting | 🔴 Red | A sabotage trajectory (straj) that evades the monitor |
 | **[D](D-ProtocolBreaking/)** | Break a Protocol | 🔴 Red | An untrusted policy that beats a protocol — then a fix |
-| **[E](E-NewControls/)** | New Side Tasks | ⚪ White | A new side task / environment / scorer that extends the testbed |
+| **[E](E-NewControls/)** | New Side Tasks | ⚪ Gray | A new side task / environment / scorer that extends the testbed |
 
 ## The shared vocabulary
 
