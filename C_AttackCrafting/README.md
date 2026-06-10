@@ -26,7 +26,7 @@ Either author an attack policy (so the model executes it) or hand-write the traj
 
 ```bash
 uv run ct run eval --policy attack -e <env> -t <main_task> -s <side_task> --no-upload
-uv run ct run monitor <your-run> --action-monitor multi --only-action   # did you stay under threshold?
+uv run ct run monitor <your-run> --action-monitor multi --only-action  # did you stay under threshold?
 ```
 
 Then confirm you actually beat the monitor at the audit budget:

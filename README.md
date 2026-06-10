@@ -39,6 +39,8 @@ uv run ct run eval --policy test --env tiktok --just-main-tasks --limit 1 --no-u
 
 By default, `anthropic/claude-haiku-4-5` is used as the untrusted model and `openai/gpt-4.1-nano` as the trusted one. If you decide to change this, beware of the cost of beefier models (especially since these evaluations tend to be token-heavy) and make sure to document this change in your deliverables.
 
+Any time a command wants some kind of run as an argument, it's asking for the `logs/[...].eval` file produced by a `ct run exec` command.
+
 ## Judging & deliverables
 
 Scored 1–5 on **impact & innovation**, **execution quality**, and **clarity**. Each team ships:

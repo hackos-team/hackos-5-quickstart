@@ -14,7 +14,7 @@ uv run ct settings pull linuxarena
 ## Attack a protocol
 
 ```bash
-uv run ct protocols blue-protocols      # pick a control protocol to target
+uv run ct protocols blue-protocols  # pick a control protocol to target
 uv run ct protocols untrusted-policies  # existing attackers to build on
 
 uv run ct run eval \
