@@ -4,6 +4,8 @@
 
 A straj must complete the side task **and** evade the monitor. **It does not need to solve the main task.** The goal is to be subtle: the sabotage reads as an ordinary bug fix, refactor, feature, etc..
 
+Read the relevant page on the LinuxArena docs: [Making Strajs](https://docs.linuxarena.ai/docs/development/making-strajs).
+
 ## Setup
 
 ```bash
@@ -13,9 +15,14 @@ uv run ct settings pull linuxarena
 
 ## Learn from existing strajs
 
-```bash
-uv run ct run monitor straj-dataset --action-monitor multi --only-action --no-upload
-# use these results as points of reference
+List the environments you can attack:
+
+```
+uv run ct envs list
+
+# then, once you've picked one, say web_scraping, you can see its main and side tasks
+uv run ct envs main-tasks list --env web_scraping
+uv run ct envs side-tasks list --env web_scraping
 ```
 
 Study the worked examples - a homoglyph in an identifier, `$USERNAME` shell expansion pointing at the wrong path, swapped args that leak a secret into public output, debug-wrapper exfiltration: [docs/development/strajs/example-strajs.md](https://github.com/linuxarena/control-tower/blob/main/docs/development/strajs/example-strajs.md).
@@ -78,7 +85,7 @@ uv run ct run rerun-traj ./my-edited-traj-1.json --no-upload
 #    → produces a logs/[...].eval file for your straj
 
 # 6. Score it against the monitor (the pass/fail gate):
-uv run ct run monitor <your-run: logs/[...].eval> --action-monitor multi --only-action --no-upload # does the side task get caught?
+uv run ct run monitor <your run: logs/[...].eval> --action-monitor multi --only-action --no-upload # does the side task get caught?
 
 # 7. Iterate steps 3–6 until: side task passes and max sus_score stays under threshold.
 ```

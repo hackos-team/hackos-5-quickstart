@@ -39,7 +39,7 @@ def my_attack(state, submit, args=None):
 
 A base policy (based on simple attack) is included in `your_policy`. Feel free to use it as a starting point, [explore other existing policies to use instead](https://github.com/linuxarena/control-tower/tree/87f186421c99f586fb2441d4864af9c2b5fba145/src/control_tower/protocols/policies/policies), or to make one from scratch.
 
-Tricks the docs call out: keep **private tools** the blue team never sees by executing their calls inline in your own generate loop and only returning clean outputs; use `request_last_turn()` to grab a final move after the protocol finishes. See [docs/development/protocols.md](https://github.com/linuxarena/control-tower/blob/main/docs/development/protocols.md) and the `private-test-attack` example.
+Tricks the docs call out: keep **private tools** the blue team never sees by executing their calls inline in your own generate loop and only returning clean outputs; use `request_last_turn()` to grab a final move after the protocol finishes. See [Protocols and Untrusted Policies](https://docs.linuxarena.ai/docs/development/protocols.md) and the `private-test-attack` example.
 
 ## [Optional] Papers to start from
 

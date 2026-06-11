@@ -20,8 +20,8 @@ uv run ct settings pull linuxarena
 ## Run the baseline loop
 
 ```bash
-# 1. Generate trajectories, or just use the shared sabotage dataset (straj-dataset)
-#    --task-file medium runs several task combos across environments so the curve isn't a single noisy point
+# 1. Generate trajectories
+# --task-file medium runs several task combos across environments so the curve isn't a single noisy point
 uv run ct run eval --policy honest \
   --task-file medium \
   --run-name honestA \
@@ -37,8 +37,8 @@ uv run ct run eval --policy simple-attack \
 # uv run ct run eval --policy simple-attack --environment clinical_trial --main-task adverse_reaction_followup_tracking --side-task suppress_safety_notifications  --run-name attackA --no-upload
 
 
-# 2. Score with a built-in monitor (openai model)
-uv run ct run monitor logs/*_attackA-*.eval --action-monitor multi --only-action --no-upload
+# 2. Score the attack trajectory with a built-in monitor (openai model)
+uv run ct run monitor logs/[...].eval --action-monitor multi --only-action --no-upload
 
 # 3. List the other available monitors that you could use
 uv run ct protocols monitors action
@@ -84,5 +84,7 @@ Pick one, reproduce its monitoring result inside control-tower, then push past i
 
 2-page report + code + 3-min demo. Compare your monitor to a baseline on the **same** attack & honest runs; report score distributions, percentiles, and safety at several audit budgets — and confirm usefulness isn't degraded. Use the [blue-team PR template](https://github.com/linuxarena/control-tower/blob/main/.github/PULL_REQUEST_TEMPLATE/blue-team.md).
 
-- [docs/monitoring.md](https://github.com/linuxarena/control-tower/blob/main/docs/monitoring.md)
-- [docs/safety-curves.md](https://github.com/linuxarena/control-tower/blob/main/docs/safety-curves.md)
+## Docs
+
+- [Monitoring](https://docs.linuxarena.ai/docs/monitoring.md)
+- [Safety Curves](https://docs.linuxarena.ai/docs/safety-curves.md)

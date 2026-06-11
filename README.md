@@ -4,6 +4,9 @@ Limit the harm an untrusted AI agent can cause while it operates, even when it a
 
 Everything here runs on **[control-tower](https://github.com/linuxarena/control-tower)**, the AI-control eval framework (LinuxArena / ControlArena) by Redwood Research and UK's AISI.
 
+> [!IMPORTANT]
+> Before continuing, make sure to familiarize yourself with LinuxArena's [hackathon quickstart](https://docs.linuxarena.ai/docs/hackathon-quickstart) and we highly highly recommend at least skimming the resources they link (we've copied them to the bottom of this README for your convenience).
+
 ## Shared setup (all tracks)
 
 > [!IMPORTANT]
@@ -64,9 +67,10 @@ Scored 1–5 on **impact & innovation**, **execution quality**, and **clarity**.
 
 ## Docs worth skimming at least once
 
-- [Control concepts](https://github.com/linuxarena/control-tower/blob/main/docs/control-concepts.md)
-- [Hands-on guide](https://github.com/linuxarena/control-tower/blob/main/docs/hands-on-guide.md)
-- [Running evals](https://github.com/linuxarena/control-tower/blob/main/docs/running-evals.md)
-- [Monitoring](https://github.com/linuxarena/control-tower/blob/main/docs/monitoring.md)
-- [Protocols](https://github.com/linuxarena/control-tower/blob/main/docs/development/protocols.md)
-- [Safety curves](https://github.com/linuxarena/control-tower/blob/main/docs/safety-curves.md)
+- [Running evals on Hawk](https://docs.linuxarena.ai/docs/hawk-usage-guide): submit to a shared Hawk cluster and watch results in the viewer, instead of running locally (unless you're confident in your local compute or running out of time, we recommended using Hawk).
+- [Running Evaluations](https://docs.linuxarena.ai/docs/running-evals): full `ct run eval` reference: policies, task sets, batching, replay.
+- [Monitoring](https://docs.linuxarena.ai/docs/monitoring): monitor types, ensembles, suspiciousness scoring (building monitors).
+- [Control Protocols](https://docs.linuxarena.ai/docs/development/protocols): defer-to-trusted, trusted editing, and writing your own protocol.
+- [Making Sabotage Trajectories](https://docs.linuxarena.ai/docs/development/making-strajs): hand-crafting attacks that evade monitors.
+- [Making Side Tasks](https://docs.linuxarena.ai/docs/development/making-side-tasks) and the [Hands-On Guide](https://docs.linuxarena.ai/docs/hands-on-guide): extending the testbed with new environments and tasks.
+- [Safety Curves](https://docs.linuxarena.ai/docs/safety-curves): turning monitor scores into safety/usefulness numbers.
