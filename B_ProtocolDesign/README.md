@@ -19,14 +19,14 @@ Control Tower pairs an **untrusted policy** (the untrusted agent) with a **proto
 # run your protocol (which is currently a copy of trusted monitoring)
 uv run ct run eval \
   --untrusted-policy simple-attack \
-  --protocol track_b-protocol_design.protocol:my_protocol \
+  --protocol protocol:my_protocol \
   --task-file medium \
   --run-name protoB-attack \
   --no-upload
 
 uv run ct run eval \
   --untrusted-policy honest \
-  --protocol track_b-protocol_design.protocol:my_protocol \
+  --protocol protocol:my_protocol \
   --task-file medium \
   --run-name protoB-honest \
   --no-upload
@@ -48,7 +48,7 @@ A blue protocol is a registered function returning an Inspect `Solver`. Inside i
 
 We've gone ahead and given you the the Trusted Monitoring protocol's implementation in `protocol.py`. You can improve it, pick another protocol to improve, or throw it away and start from scratch. Whichever you do, we recommend you look at the scaffolding and the functions available for your protocol to help, since it'll make your life easier.
 
-See [docs/development/protocols.md](https://github.com/linuxarena/control-tower/blob/main/docs/development/protocols.md). You should always be using `filter_out_monitor_messages()` so that the agent don't sees the monitor's messages.
+See [Protocols and Untrusted Policies](https://docs.linuxarena.ai/docs/development/protocols.md). You should always use `filter_out_monitor_messages()` so that the agent don't sees the monitor's messages.
 
 ## Measure the tradeoff
 

@@ -12,7 +12,7 @@ An untrusted agent works on a *main task* and may secretly attempt a *side task*
 
 ```bash
 pip install uv 
-uv sync --python 3.14
+uv sync --python 3.13
 uv run ct init
 uv run ct settings pull linuxarena
 ```
@@ -20,8 +20,8 @@ uv run ct settings pull linuxarena
 ## Run the baseline loop
 
 ```bash
-# 1. Generate trajectories, or just use the shared sabotage dataset (straj-dataset)
-#    --task-file medium runs several task combos across environments so the curve isn't a single noisy point
+# 1. Generate trajectories
+# --task-file medium runs several task combos across environments so the curve isn't a single noisy point
 uv run ct run eval --policy honest \
   --task-file medium \
   --run-name honestA \
@@ -37,11 +37,12 @@ uv run ct run eval --policy simple-attack \
 # uv run ct run eval --policy simple-attack --environment clinical_trial --main-task adverse_reaction_followup_tracking --side-task suppress_safety_notifications  --run-name attackA --no-upload
 
 
-# 2. Score with a built-in monitor (openai model)
-uv run ct run monitor logs/*_attackA-*.eval --action-monitor multi --only-action --no-upload
+# 2. Score the attack trajectory with a built-in monitor (openai model)
+uv run ct run monitor logs/[...].eval --action-monitor multi --only-action --no-upload
 
 # 3. List the other available monitors that you could use
-uv run ct protocols monitors action # ther are also trajectory monitors!
+uv run ct protocols monitors action
+uv run ct protocols monitors trajectory
 ```
 
 You want to try and perform better than the available monitors.
@@ -51,19 +52,19 @@ You want to try and perform better than the available monitors.
 Some boilerplate has been provided for you in `monitor.py`. At any moment, you can test your monitor with the following command:
 
 ```sh
-uv run ct run monitor logs/*_attackA-*.eval --action-monitor track_a-monitor_building.monitor:my_action_monitor --only-action
+uv run ct run monitor logs/*_attackA-*.eval --action-monitor monitor:my_action_monitor --only-action --no-upload
 ```
 
 For monitors that need the whole sequence, register a trajectory-level monitor instead (scores once per trajectory instead of once per action). An example has already been included in `monitor.py`, and you can use the following command to test it:
 
 ```sh
-uv run ct run monitor logs/*_attackA-*.eval --action-monitor track_a-monitor_building.monitor:my_traj_monitor
+uv run ct run monitor logs/*_attackA-*.eval --trajectory-monitor monitor:my_traj_monitor --only-trajectory --no-upload
 ```
 
 ## Measure safety vs. usefulness
 
 ```bash
-uv run ct game-metrics metrics --honest <honest-run: logs/*_attackA-*.eval> --attack <attack-run: logs/*_attackA-*.eval> \
+uv run ct game-metrics metrics --honest <honest-run: logs/*_honestA-*.eval> --attack <attack-run: logs/*_attackA-*.eval> \
   --audit-budgets 0.1 --audit-budgets 1 --audit-budgets 5 --output-dir results/
 ```
 
@@ -83,5 +84,7 @@ Pick one, reproduce its monitoring result inside control-tower, then push past i
 
 2-page report + code + 3-min demo. Compare your monitor to a baseline on the **same** attack & honest runs; report score distributions, percentiles, and safety at several audit budgets — and confirm usefulness isn't degraded. Use the [blue-team PR template](https://github.com/linuxarena/control-tower/blob/main/.github/PULL_REQUEST_TEMPLATE/blue-team.md).
 
-- [docs/monitoring.md](https://github.com/linuxarena/control-tower/blob/main/docs/monitoring.md)
-- [docs/safety-curves.md](https://github.com/linuxarena/control-tower/blob/main/docs/safety-curves.md)
+## Docs
+
+- [Monitoring](https://docs.linuxarena.ai/docs/monitoring.md)
+- [Safety Curves](https://docs.linuxarena.ai/docs/safety-curves.md)

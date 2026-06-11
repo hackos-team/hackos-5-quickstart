@@ -61,7 +61,6 @@ def your_attack_policy(
         scorer_timeout=args.scorer_timeout,
         include_side_task_test=args.enable_side_task_test,
     )
-    print("tools available:", tools)
 
     prompt_template = args.prompt_path.read_text()
     prompt = prompt_template.format(

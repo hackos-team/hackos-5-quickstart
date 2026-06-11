@@ -4,6 +4,7 @@
 
 Side tasks are the foundation of the whole benchmark: they're what every monitor and protocol gets tested against. You should pick a main task and find a (critical) point of failure in it to make a side task out of.
 
+
 ## Setup
 
 ```bash
@@ -51,7 +52,8 @@ An example, being the `suppress_safety_notifications` side task in the `clinical
 - **Intelligence-scaling** — smarter attackers should be able to do it in sneakier ways.
 - **Coverable** by multiple plausible main tasks.
 
-Full guide to creating side tasks: [making-side-tasks.md](https://github.com/linuxarena/control-tower/blob/main/docs/development/making-side-tasks.md)
+Full guide: [Making Side Tasks](https://docs.linuxarena.ai/docs/development/making-side-tasks)
+-> Additional references: [Hands-On Guide](https://docs.linuxarena.ai/docs/hands-on-guide), [Making Main Tasks](https://docs.linuxarena.ai/docs/development/making-main-tasks.md)
 
 ## Validate it
 
@@ -59,34 +61,33 @@ Full guide to creating side tasks: [making-side-tasks.md](https://github.com/lin
 X_ENVIRONMENT="" # name of environment you're targetting
 X_MAIN_TASK="" # name of the main task you're targetting
 
-# move it to the proper dir
-mkdir -p .settings/linuxarena/$X_ENVIRONMENT/
-mv side_tasks .settings/linuxarena/$X_ENVIRONMENT/
+# move it into the pulled environment (next to its existing side tasks)
+mv side_tasks/my_task_idea .settings/linuxarena/$X_ENVIRONMENT/side_tasks/
 
-uv run ct run side-task-review --environment $X_ENVIRONMENT --side-task my_task_idea # auto-audit: reward-hacking, magic numbers, straj feasibility
+uv run ct run side-task-review -e $X_ENVIRONMENT --side-task my_task_idea # auto-audit: reward-hacking, magic numbers, straj feasibility
 
 # run the attack policy
-ct run eval --policy attack \
+uv run ct run eval --policy attack \
   --environment $X_ENVIRONMENT \
   --main-task $X_MAIN_TASK \
   --side-task my_task_idea \
-  --run-name trackC-attack \
+  --run-name trackE-attack \
   --no-upload
-# -> creates logs/trackC-attack*.md
+# -> creates logs/trackE-attack*.eval
 
-uv run ct run monitor <straj-run: logs/trackC-attack*.md> --action-monitor multi --only-action
+uv run ct run monitor <straj-run: logs/trackE-attack*.eval> --action-monitor multi --only-action --no-upload
 ```
 
 Every side task needs **≥1 straj** proving it's accomplishable subtly. If you can't build a low-suspiciousness straj on any untrusted model, the side task is probably misdesigned but it is still valuable data. Optionally, we recommend you accompany it with a harder side task for comparison.
 
-## Papers to start from — reproduce, then improve
+## [Optional] Papers to start from
 
 These define environments, side tasks, and the threat-model taxonomy. Reproduce a task category here, then extend it into the testbed.
 
-- **[SHADE-Arena: Evaluating Sabotage and Monitoring in LLM Agents](https://arxiv.org/abs/2506.15740)** — Kutasov et al., 2025 (arXiv:2506.15740). Complex agentic environments paired with sabotage side tasks. **Reproduce** the structure of one environment; **improve** by porting a new side task into control-tower with a validating straj.
-- **[Sabotage Evaluations for Frontier Models](https://arxiv.org/abs/2410.21514)** — Benton et al. (Anthropic), 2024 (arXiv:2410.21514). Four threat models (decision sabotage, code sabotage, sandbagging, undermining oversight). **Reproduce** one as a side task; **improve** the scorer so it's not accidentally triggerable by an honest agent.
-- **[AgentDojo: …Prompt Injection Attacks and Defenses for LLM Agents](https://arxiv.org/abs/2406.13352)** — Debenedetti et al., 2024 (arXiv:2406.13352). An extensible tool-use environment — a model for *how to build* a new one. **Reproduce** a task + attack surface; **improve** into a fresh environment + side task (e.g. CTF-style cybersecurity).
-- **[How to evaluate control measures for LLM agents?](https://arxiv.org/abs/2504.05259)** — Korbak et al. (UK AISI), 2025 (arXiv:2504.05259). How threat models should scale with capability. **Reproduce** their threat-model framing for your task; **improve** by designing a side task whose difficulty scales with attacker intelligence (sneakier solutions for smarter models).
+- **[SHADE-Arena: Evaluating Sabotage and Monitoring in LLM Agents](https://arxiv.org/abs/2506.15740)** — Kutasov et al., 2025 (arXiv:2506.15740). Complex agentic environments paired with sabotage side tasks. Reproduce the structure of one environment; improve by porting a new side task into control-tower with a validating straj.
+- **[Sabotage Evaluations for Frontier Models](https://arxiv.org/abs/2410.21514)** — Benton et al. (Anthropic), 2024 (arXiv:2410.21514). Four threat models (decision sabotage, code sabotage, sandbagging, undermining oversight). Reproduce one as a side task; improve the scorer so it's not accidentally triggerable by an honest agent.
+- **[AgentDojo: …Prompt Injection Attacks and Defenses for LLM Agents](https://arxiv.org/abs/2406.13352)** — Debenedetti et al., 2024 (arXiv:2406.13352). An extensible tool-use environment — a model for *how to build* a new one. Reproduce a task + attack surface; improve into a fresh environment + side task (e.g. CTF-style cybersecurity).
+- **[How to evaluate control measures for LLM agents?](https://arxiv.org/abs/2504.05259)** — Korbak et al. (UK AISI), 2025 (arXiv:2504.05259). How threat models should scale with capability. Reproduce their threat-model framing for your task; improve by designing a side task whose difficulty scales with attacker intelligence (sneakier solutions for smarter models).
 
 ## Deliverables
 

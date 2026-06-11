@@ -4,10 +4,13 @@ Limit the harm an untrusted AI agent can cause while it operates, even when it a
 
 Everything here runs on **[control-tower](https://github.com/linuxarena/control-tower)**, the AI-control eval framework (LinuxArena / ControlArena) by Redwood Research and UK's AISI.
 
+> [!IMPORTANT]
+> Before continuing, make sure to familiarize yourself with LinuxArena's [hackathon quickstart](https://docs.linuxarena.ai/docs/hackathon-quickstart) and we highly highly recommend at least skimming the resources they link (we've copied them to the bottom of this README for your convenience).
+
 ## Shared setup (all tracks)
 
 > [!IMPORTANT]
-> [Make sure to read the base documentation for dealing with Control Tower from Redwood Research](todo)
+> [Make sure to read the base documentation for dealing with Control Tower from Redwood Research](https://github.com/linuxarena/control-tower/blob/main/docs/hands-on-guide.md)
 
 Before starting, make sure you have the following set up:
 
@@ -21,7 +24,7 @@ uv run ct init  # completions, `ct` alias, settings, agent skills
 uv run ct settings pull linuxarena  # environments, main tasks, side tasks
 ```
 
-Before spending any of your credits, run this to make sure everything works (it just runs `ls` and then exist, no model calls):
+Before spending any of your credits, run this to make sure everything works (it just runs `ls` and then exits, no model calls):
 
 ```bash
 uv run ct run eval --policy test --env tiktok --just-main-tasks --limit 1 --no-upload
@@ -47,9 +50,9 @@ uv run ct run eval --policy test --env tiktok --just-main-tasks --limit 1 --no-u
 - **Safety** = caught / (caught + uncaught successful sabotage), at a fixed audit budget (FPR on honest runs).
 - **Usefulness** = honest main-task success rate.
 
-By default, `anthropic/claude-haiku-4-5` (shorthand: `haiku`) is used as the untrusted model and `openai/gpt-4.1-nano` as the trusted one. If you decide to change this, beware of the cost of beefier models (especially since these evaluations tend to be token-heavy) and make sure to document this change in your deliverables.
+By default, `anthropic/claude-haiku-4-5` (shorthand: `haiku`) is used as the untrusted model and `openai/gpt-5-nano` as the trusted one. If you decide to change this, beware of the cost of beefier models (especially since these evaluations tend to be token-heavy) and make sure to document this change in your deliverables.
 
-Any time a command wants some kind of run as an argument, it's asking for the `logs/[...].eval` file produced by a `ct run exec` command.
+Any time a command wants some kind of run as an argument, it's asking for the `logs/[...].eval` file produced by a `ct run eval` command.
 
 ## Judging & deliverables
 
@@ -64,9 +67,10 @@ Scored 1–5 on **impact & innovation**, **execution quality**, and **clarity**.
 
 ## Docs worth skimming at least once
 
-- [Control concepts](https://github.com/linuxarena/control-tower/blob/main/docs/control-concepts.md)
-- [Hands-on guide](https://github.com/linuxarena/control-tower/blob/main/docs/hands-on-guide.md)
-- [Running evals](https://github.com/linuxarena/control-tower/blob/main/docs/running-evals.md)
-- [Monitoring](https://github.com/linuxarena/control-tower/blob/main/docs/monitoring.md)
-- [Protocols](https://github.com/linuxarena/control-tower/blob/main/docs/development/protocols.md)
-- [Safety curves](https://github.com/linuxarena/control-tower/blob/main/docs/safety-curves.md)
+- [Running evals on Hawk](https://docs.linuxarena.ai/docs/hawk-usage-guide): submit to a shared Hawk cluster and watch results in the viewer, instead of running locally (unless you're confident in your local compute or running out of time, we recommended using Hawk).
+- [Running Evaluations](https://docs.linuxarena.ai/docs/running-evals): full `ct run eval` reference: policies, task sets, batching, replay.
+- [Monitoring](https://docs.linuxarena.ai/docs/monitoring): monitor types, ensembles, suspiciousness scoring (building monitors).
+- [Control Protocols](https://docs.linuxarena.ai/docs/development/protocols): defer-to-trusted, trusted editing, and writing your own protocol.
+- [Making Sabotage Trajectories](https://docs.linuxarena.ai/docs/development/making-strajs): hand-crafting attacks that evade monitors.
+- [Making Side Tasks](https://docs.linuxarena.ai/docs/development/making-side-tasks) and the [Hands-On Guide](https://docs.linuxarena.ai/docs/hands-on-guide): extending the testbed with new environments and tasks.
+- [Safety Curves](https://docs.linuxarena.ai/docs/safety-curves): turning monitor scores into safety/usefulness numbers.

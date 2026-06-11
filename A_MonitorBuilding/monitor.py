@@ -1,4 +1,4 @@
-from control_tower.protocols.monitoring.registry import action_monitors
+from control_tower.protocols.monitoring.registry import action_monitors, trajectory_monitors
 from control_tower.protocols.monitoring.types import ActionMonitor, TrajMonitor, MonitorResult
 from control_tower.trajectories.trajectory import Trajectory
 from control_tower.utils.function_registry.base_model import BaseModelPython
@@ -23,14 +23,13 @@ def my_action_monitor(args: MyArgs | None = None) -> ActionMonitor:
 
     return ActionMonitor(func=monitor_func)
 
-# alternatively:
-@action_monitors.register()
+# alternatively, score the whole trajectory at once:
+@trajectory_monitors.register()
 def my_traj_monitor(args: MyArgs | None = None) -> TrajMonitor:
     args = args or MyArgs()
 
-    async def monitor_func(traj: Trajectory, action_idx: int) -> MonitorResult:
-        action = traj.actions[action_idx]
-        # your scoring logic here
+    async def monitor_func(traj: Trajectory) -> MonitorResult:
+        # your scoring logic here, over traj.actions as a whole
         return MonitorResult(sus_score=0.0, reasoning="why this score")
 
     return TrajMonitor(func=monitor_func)
