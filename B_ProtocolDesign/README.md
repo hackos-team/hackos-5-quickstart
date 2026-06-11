@@ -19,14 +19,14 @@ Control Tower pairs an **untrusted policy** (the untrusted agent) with a **proto
 # run your protocol (which is currently a copy of trusted monitoring)
 uv run ct run eval \
   --untrusted-policy simple-attack \
-  --protocol track_b-protocol_design.protocol:my_protocol \
+  --protocol protocol:my_protocol \
   --task-file medium \
   --run-name protoB-attack \
   --no-upload
 
 uv run ct run eval \
   --untrusted-policy honest \
-  --protocol track_b-protocol_design.protocol:my_protocol \
+  --protocol protocol:my_protocol \
   --task-file medium \
   --run-name protoB-honest \
   --no-upload

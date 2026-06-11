@@ -18,7 +18,7 @@ uv run ct protocols blue-protocols  # pick a control protocol to target
 uv run ct protocols untrusted-policies  # existing attackers to build on
 
 uv run ct run eval \
-  --untrusted-policy track_d-protocol_breaking.your-policy.policy:your_attack_policy \
+  --untrusted-policy your_policy.policy:your_attack_policy \
   --protocol trusted-monitoring \
   --protocol-arg sus_threshold=7 \
   --task-file medium \
