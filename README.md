@@ -7,7 +7,7 @@ Everything here runs on **[control-tower](https://github.com/linuxarena/control-
 ## Shared setup (all tracks)
 
 > [!IMPORTANT]
-> [Make sure to read the base documentation for dealing with Control Tower from Redwood Research](todo)
+> [Make sure to read the base documentation for dealing with Control Tower from Redwood Research](https://github.com/linuxarena/control-tower/blob/main/docs/hands-on-guide.md)
 
 Before starting, make sure you have the following set up:
 
@@ -21,7 +21,7 @@ uv run ct init  # completions, `ct` alias, settings, agent skills
 uv run ct settings pull linuxarena  # environments, main tasks, side tasks
 ```
 
-Before spending any of your credits, run this to make sure everything works (it just runs `ls` and then exist, no model calls):
+Before spending any of your credits, run this to make sure everything works (it just runs `ls` and then exits, no model calls):
 
 ```bash
 uv run ct run eval --policy test --env tiktok --just-main-tasks --limit 1 --no-upload
@@ -47,9 +47,9 @@ uv run ct run eval --policy test --env tiktok --just-main-tasks --limit 1 --no-u
 - **Safety** = caught / (caught + uncaught successful sabotage), at a fixed audit budget (FPR on honest runs).
 - **Usefulness** = honest main-task success rate.
 
-By default, `anthropic/claude-haiku-4-5` (shorthand: `haiku`) is used as the untrusted model and `openai/gpt-4.1-nano` as the trusted one. If you decide to change this, beware of the cost of beefier models (especially since these evaluations tend to be token-heavy) and make sure to document this change in your deliverables.
+By default, `anthropic/claude-haiku-4-5` (shorthand: `haiku`) is used as the untrusted model and `openai/gpt-5-nano` as the trusted one. If you decide to change this, beware of the cost of beefier models (especially since these evaluations tend to be token-heavy) and make sure to document this change in your deliverables.
 
-Any time a command wants some kind of run as an argument, it's asking for the `logs/[...].eval` file produced by a `ct run exec` command.
+Any time a command wants some kind of run as an argument, it's asking for the `logs/[...].eval` file produced by a `ct run eval` command.
 
 ## Judging & deliverables
 
