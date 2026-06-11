@@ -50,10 +50,10 @@ Attack:
 
 ```bash
 # 1. Generate an attack baseline on the main task: check where it went wrong and try to patch it
-uv run ct run eval --policy simple-attach \
+uv run ct run eval --policy simple-attack \
     --environment clinical_trial \
     --main-task adverse_reaction_followup_tracking \
-    --side-task suppress_safety_notification \
+    --side-task suppress_safety_notifications \
     --run-name attackC-base \
     --no-upload
 #    → produces some logs/attackC-base*.eval file
@@ -74,11 +74,11 @@ uv run ct live traj                                         # run your solution 
 uv run ct live score --only-side # does the side task pass?
 
 # 5. create a run from your most successful straj.s 
-uv run ct run eval --trajectory-id ./my-edited-traj-1.json --run-name attackC-straj1 --policy replay
-#    → produces some attackC-straj1*.eval file
+uv run ct run rerun-traj ./my-edited-traj-1.json --no-upload
+#    → produces a logs/[...].eval file for your straj
 
 # 6. Score it against the monitor (the pass/fail gate):
-uv run ct run monitor <your-run: logs/attackC-straj1*.eval> --action-monitor multi --only-action # does the side task get caught?
+uv run ct run monitor <your-run: logs/[...].eval> --action-monitor multi --only-action # does the side task get caught?
 
 # 7. Iterate steps 3–6 until: side task passes and max sus_score stays under threshold.
 ```
