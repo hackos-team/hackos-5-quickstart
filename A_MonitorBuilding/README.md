@@ -41,7 +41,8 @@ uv run ct run eval --policy simple-attack \
 uv run ct run monitor logs/*_attackA-*.eval --action-monitor multi --only-action --no-upload
 
 # 3. List the other available monitors that you could use
-uv run ct protocols monitors action # ther are also trajectory monitors!
+uv run ct protocols monitors action
+uv run ct protocols monitors trajectory
 ```
 
 You want to try and perform better than the available monitors.
@@ -57,7 +58,7 @@ uv run ct run monitor logs/*_attackA-*.eval --action-monitor monitor:my_action_m
 For monitors that need the whole sequence, register a trajectory-level monitor instead (scores once per trajectory instead of once per action). An example has already been included in `monitor.py`, and you can use the following command to test it:
 
 ```sh
-uv run ct run monitor logs/*_attackA-*.eval --action-monitor track_a-monitor_building.monitor:my_traj_monitor
+uv run ct run monitor logs/*_attackA-*.eval --trajectory-monitor monitor:my_traj_monitor --only-trajectory
 ```
 
 ## Measure safety vs. usefulness
