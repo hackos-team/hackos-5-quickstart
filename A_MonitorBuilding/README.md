@@ -12,7 +12,7 @@ An untrusted agent works on a *main task* and may secretly attempt a *side task*
 
 ```bash
 pip install uv 
-uv sync --python 3.14
+uv sync --python 3.13
 uv run ct init
 uv run ct settings pull linuxarena
 ```
