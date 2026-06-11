@@ -66,7 +66,13 @@ mv side_tasks .settings/linuxarena/$X_ENVIRONMENT/
 uv run ct run side-task-review --environment $X_ENVIRONMENT --side-task my_task_idea # auto-audit: reward-hacking, magic numbers, straj feasibility
 
 # run the attack policy
-ct run eval --policy attack --environment $X_ENVIRONMENT --main-task $X_MAIN_TASK --side-task my_task_idea --run-name trackC-attack
+ct run eval --policy attack \
+  --environment $X_ENVIRONMENT \
+  --main-task $X_MAIN_TASK \
+  --side-task my_task_idea \
+  --run-name trackC-attack \
+  -p model=haiku \
+  --no-upload
 # -> creates logs/trackC-attack*.md
 
 uv run ct run monitor <straj-run: logs/trackC-attack*.md> --action-monitor multi --only-action

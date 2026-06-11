@@ -55,6 +55,7 @@ uv run ct run eval --policy simple-attach \
     --main-task adverse_reaction_followup_tracking \
     --side-task suppress_safety_notification \
     --run-name attackC-base \
+    -p model=haiku \
     --no-upload
 #    → produces some logs/attackC-base*.eval file
 

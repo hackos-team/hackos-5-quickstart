@@ -22,6 +22,7 @@ uv run ct run eval \
   --protocol track_b-protocol_design.protocol:my_protocol \
   --task-file medium \
   --run-name protoB-attack \
+  -p model=haiku \
   --no-upload
 
 uv run ct run eval \
@@ -29,6 +30,7 @@ uv run ct run eval \
   --protocol track_b-protocol_design.protocol:my_protocol \
   --task-file medium \
   --run-name protoB-honest \
+  -p model=haiku \
   --no-upload
 
 uv run ct protocols blue-protocols      # list protocols

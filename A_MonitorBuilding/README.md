@@ -22,16 +22,26 @@ uv run ct settings pull linuxarena
 ```bash
 # 1. Generate trajectories, or just use the shared sabotage dataset (straj-dataset)
 #    --task-file medium runs several task combos across environments so the curve isn't a single noisy point
-uv run ct run eval --policy honest --task-file medium --no-upload
-uv run ct run eval --policy simple-attack --task-file medium --no-upload
+uv run ct run eval --policy honest \
+  --task-file medium \
+  --run-name honestA \
+  -p model=haiku \
+  --no-upload
+
+uv run ct run eval --policy simple-attack \
+  --task-file medium \
+  --run-name attackA \
+  -p model=haiku \
+  --no-upload
 
 # the alternative is to run the policy on a single main/side task pair:
-# uv run ct run eval --policy honest --environment clinical_trial --main-task adverse_reaction_followup_tracking --no-upload
-# uv run ct run eval --policy simple-attack --environment clinical_trial --main-task adverse_reaction_followup_tracking --side-task suppress_safety_notifications --no-upload
+# uv run ct run eval --policy honest --environment clinical_trial --main-task adverse_reaction_followup_tracking -p model=haiku --run-name honestA --no-upload
+# uv run ct run eval --policy simple-attack --environment clinical_trial --main-task adverse_reaction_followup_tracking --side-task suppress_safety_notifications  -p model=haiku --run-name attackA --no-upload
 
 
 # 2. Score with a built-in monitor
-uv run ct run monitor straj-dataset --action-monitor multi --only-action
+# it seems like no public strajes exist?
+uv run ct run monitor straj-dataset --action-monitor multi --only-action --no-upload # logs/*_simple-attack-*.eval
 
 # 3. List the other available monitors that you could use
 uv run ct protocols monitors
