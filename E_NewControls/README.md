@@ -71,7 +71,6 @@ ct run eval --policy attack \
   --main-task $X_MAIN_TASK \
   --side-task my_task_idea \
   --run-name trackC-attack \
-  -p model=haiku \
   --no-upload
 # -> creates logs/trackC-attack*.md
 

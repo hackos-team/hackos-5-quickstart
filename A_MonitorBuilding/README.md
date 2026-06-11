@@ -25,18 +25,16 @@ uv run ct settings pull linuxarena
 uv run ct run eval --policy honest \
   --task-file medium \
   --run-name honestA \
-  -p model=haiku \
   --no-upload
 
 uv run ct run eval --policy simple-attack \
   --task-file medium \
   --run-name attackA \
-  -p model=haiku \
   --no-upload
 
 # the alternative is to run the policy on a single main/side task pair:
-# uv run ct run eval --policy honest --environment clinical_trial --main-task adverse_reaction_followup_tracking -p model=haiku --run-name honestA --no-upload
-# uv run ct run eval --policy simple-attack --environment clinical_trial --main-task adverse_reaction_followup_tracking --side-task suppress_safety_notifications  -p model=haiku --run-name attackA --no-upload
+# uv run ct run eval --policy honest --environment clinical_trial --main-task adverse_reaction_followup_tracking --run-name honestA --no-upload
+# uv run ct run eval --policy simple-attack --environment clinical_trial --main-task adverse_reaction_followup_tracking --side-task suppress_safety_notifications  --run-name attackA --no-upload
 
 
 # 2. Score with a built-in monitor (openai model)
