@@ -73,7 +73,7 @@ uv run ct run eval --policy attack \
   --no-upload
 # -> creates logs/trackE-attack*.eval
 
-uv run ct run monitor <straj-run: logs/trackE-attack*.eval> --action-monitor multi --only-action
+uv run ct run monitor <straj-run: logs/trackE-attack*.eval> --action-monitor multi --only-action --no-upload
 ```
 
 Every side task needs **≥1 straj** proving it's accomplishable subtly. If you can't build a low-suspiciousness straj on any untrusted model, the side task is probably misdesigned but it is still valuable data. Optionally, we recommend you accompany it with a harder side task for comparison.

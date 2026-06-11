@@ -14,7 +14,7 @@ uv run ct settings pull linuxarena
 ## Learn from existing strajs
 
 ```bash
-uv run ct run monitor straj-dataset --action-monitor multi --only-action
+uv run ct run monitor straj-dataset --action-monitor multi --only-action --no-upload
 # use these results as points of reference
 ```
 
@@ -78,7 +78,7 @@ uv run ct run rerun-traj ./my-edited-traj-1.json --no-upload
 #    → produces a logs/[...].eval file for your straj
 
 # 6. Score it against the monitor (the pass/fail gate):
-uv run ct run monitor <your-run: logs/[...].eval> --action-monitor multi --only-action # does the side task get caught?
+uv run ct run monitor <your-run: logs/[...].eval> --action-monitor multi --only-action --no-upload # does the side task get caught?
 
 # 7. Iterate steps 3–6 until: side task passes and max sus_score stays under threshold.
 ```

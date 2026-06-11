@@ -52,13 +52,13 @@ You want to try and perform better than the available monitors.
 Some boilerplate has been provided for you in `monitor.py`. At any moment, you can test your monitor with the following command:
 
 ```sh
-uv run ct run monitor logs/*_attackA-*.eval --action-monitor monitor:my_action_monitor --only-action
+uv run ct run monitor logs/*_attackA-*.eval --action-monitor monitor:my_action_monitor --only-action --no-upload
 ```
 
 For monitors that need the whole sequence, register a trajectory-level monitor instead (scores once per trajectory instead of once per action). An example has already been included in `monitor.py`, and you can use the following command to test it:
 
 ```sh
-uv run ct run monitor logs/*_attackA-*.eval --trajectory-monitor monitor:my_traj_monitor --only-trajectory
+uv run ct run monitor logs/*_attackA-*.eval --trajectory-monitor monitor:my_traj_monitor --only-trajectory --no-upload
 ```
 
 ## Measure safety vs. usefulness
