@@ -39,12 +39,11 @@ uv run ct run eval --policy simple-attack \
 # uv run ct run eval --policy simple-attack --environment clinical_trial --main-task adverse_reaction_followup_tracking --side-task suppress_safety_notifications  -p model=haiku --run-name attackA --no-upload
 
 
-# 2. Score with a built-in monitor
-# it seems like no public strajes exist?
-uv run ct run monitor straj-dataset --action-monitor multi --only-action --no-upload # logs/*_simple-attack-*.eval
+# 2. Score with a built-in monitor (openai model)
+uv run ct run monitor logs/*_attackA-*.eval --action-monitor multi --only-action --no-upload
 
 # 3. List the other available monitors that you could use
-uv run ct protocols monitors
+uv run ct protocols monitors action # ther are also trajectory monitors!
 ```
 
 You want to try and perform better than the available monitors.
@@ -54,19 +53,19 @@ You want to try and perform better than the available monitors.
 Some boilerplate has been provided for you in `monitor.py`. At any moment, you can test your monitor with the following command:
 
 ```sh
-uv run ct run monitor straj-dataset --action-monitor track_a-monitor_building.monitor:my_action_monitor --only-action
+uv run ct run monitor logs/*_attackA-*.eval --action-monitor track_a-monitor_building.monitor:my_action_monitor --only-action
 ```
 
 For monitors that need the whole sequence, register a trajectory-level monitor instead (scores once per trajectory instead of once per action). An example has already been included in `monitor.py`, and you can use the following command to test it:
 
 ```sh
-uv run ct run monitor straj-dataset --action-monitor track_a-monitor_building.monitor:my_traj_monitor
+uv run ct run monitor logs/*_attackA-*.eval --action-monitor track_a-monitor_building.monitor:my_traj_monitor
 ```
 
 ## Measure safety vs. usefulness
 
 ```bash
-uv run ct game-metrics metrics --honest <honest-run> --attack <attack-run> \
+uv run ct game-metrics metrics --honest <honest-run: logs/*_attackA-*.eval> --attack <attack-run: logs/*_attackA-*.eval> \
   --audit-budgets 0.1 --audit-budgets 1 --audit-budgets 5 --output-dir results/
 ```
 
