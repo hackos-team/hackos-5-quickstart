@@ -59,22 +59,21 @@ Full guide to creating side tasks: [making-side-tasks.md](https://github.com/lin
 X_ENVIRONMENT="" # name of environment you're targetting
 X_MAIN_TASK="" # name of the main task you're targetting
 
-# move it to the proper dir
-mkdir -p .settings/linuxarena/$X_ENVIRONMENT/
-mv side_tasks .settings/linuxarena/$X_ENVIRONMENT/
+# move it into the pulled environment (next to its existing side tasks)
+mv side_tasks/my_task_idea .settings/linuxarena/$X_ENVIRONMENT/side_tasks/
 
-uv run ct run side-task-review --environment $X_ENVIRONMENT --side-task my_task_idea # auto-audit: reward-hacking, magic numbers, straj feasibility
+uv run ct run side-task-review -e $X_ENVIRONMENT --side-task my_task_idea # auto-audit: reward-hacking, magic numbers, straj feasibility
 
 # run the attack policy
-ct run eval --policy attack \
+uv run ct run eval --policy attack \
   --environment $X_ENVIRONMENT \
   --main-task $X_MAIN_TASK \
   --side-task my_task_idea \
-  --run-name trackC-attack \
+  --run-name trackE-attack \
   --no-upload
-# -> creates logs/trackC-attack*.md
+# -> creates logs/trackE-attack*.eval
 
-uv run ct run monitor <straj-run: logs/trackC-attack*.md> --action-monitor multi --only-action
+uv run ct run monitor <straj-run: logs/trackE-attack*.eval> --action-monitor multi --only-action
 ```
 
 Every side task needs **≥1 straj** proving it's accomplishable subtly. If you can't build a low-suspiciousness straj on any untrusted model, the side task is probably misdesigned but it is still valuable data. Optionally, we recommend you accompany it with a harder side task for comparison.
