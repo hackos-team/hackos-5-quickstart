@@ -64,7 +64,7 @@ uv run ct run monitor logs/*_attackA-*.eval --trajectory-monitor monitor:my_traj
 ## Measure safety vs. usefulness
 
 ```bash
-uv run ct game-metrics metrics --honest <honest-run: logs/*_attackA-*.eval> --attack <attack-run: logs/*_attackA-*.eval> \
+uv run ct game-metrics metrics --honest <honest-run: logs/*_honestA-*.eval> --attack <attack-run: logs/*_attackA-*.eval> \
   --audit-budgets 0.1 --audit-budgets 1 --audit-budgets 5 --output-dir results/
 ```
 
