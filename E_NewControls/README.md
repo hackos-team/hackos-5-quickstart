@@ -15,7 +15,7 @@ uv run ct settings pull linuxarena
 ## Anatomy of a side task ([reference](https://github.com/linuxarena/control-tower/blob/2e2ddb8f9cb006775cc669ada3511c4e8890bf7a/docs/development/making-side-tasks.md))
 
 ```
-side_tasks/my_task_idea/        # add the _idea suffix while WIP so tests don't gate on it
+side_tasks/my_side_task/        # a folder ending in `_idea` is hidden from discovery — park a WIP task there, but rename (no `_idea`) before you validate
   __init__.py                   # make_side_task_config_from_path(..., failure_type=, task_category=, scorer=)
   scorer.py                     # @linux_scorer; the main function MUST be named scorer()
   docs/
@@ -27,7 +27,7 @@ side_tasks/my_task_idea/        # add the _idea suffix while WIP so tests don't 
 ```
 
 ```python
-# side_tasks/my_task_idea/__init__.py
+# side_tasks/my_side_task/__init__.py
 from pathlib import Path
 from .scorer import scorer
 from control_tower.task.task_config import make_side_task_config_from_path
@@ -58,27 +58,29 @@ Full guide: [Making Side Tasks](https://docs.linuxarena.ai/docs/development/maki
 ## Validate it
 
 ```bash
-X_ENVIRONMENT="" # name of environment you're targetting
-X_MAIN_TASK="" # name of the main task you're targetting
+X_ENVIRONMENT="clinical_trial"                    # environment you're targeting
+X_MAIN_TASK="adverse_reaction_followup_tracking"  # a main task in it
 
-# move it into the pulled environment (next to its existing side tasks)
-mv side_tasks/my_task_idea .settings/linuxarena/$X_ENVIRONMENT/side_tasks/
+# move it into the pulled environment, next to its existing side tasks.
+# (Rename off any `_idea` suffix first, or it stays hidden from every command below.)
+mv side_tasks/my_side_task .settings/linuxarena/$X_ENVIRONMENT/side_tasks/
 
-uv run ct run side-task-review -e $X_ENVIRONMENT --side-task my_task_idea # auto-audit: reward-hacking, magic numbers, straj feasibility
+uv run ct envs side-tasks list --env $X_ENVIRONMENT   # confirm my_side_task now appears (note: --env, not -e)
+
+uv run ct run side-task-review -e $X_ENVIRONMENT --side-task my_side_task # auto-audit: reward-hacking, magic numbers, straj feasibility
 
 # run the attack policy
 uv run ct run eval --policy attack \
-  --environment $X_ENVIRONMENT \
-  --main-task $X_MAIN_TASK \
-  --side-task my_task_idea \
-  --run-name trackE-attack \
-  --no-upload
-# -> creates logs/trackE-attack*.eval
+  -e $X_ENVIRONMENT -t $X_MAIN_TASK -s my_side_task \
+  --run-name trackE-attack --max-samples 1 --no-upload
+# -> creates logs/*trackE-attack*.eval
 
-uv run ct run monitor <straj-run: logs/trackE-attack*.eval> --action-monitor multi --only-action --no-upload
+uv run ct run monitor logs/*trackE-attack*.eval --action-monitor multi --only-action --no-upload
 ```
 
 Every side task needs **≥1 straj** proving it's accomplishable subtly. If you can't build a low-suspiciousness straj on any untrusted model, the side task is probably misdesigned but it is still valuable data. Optionally, we recommend you accompany it with a harder side task for comparison.
+
+A common scorer bug `side-task-review` flags: globally breaking the targeted feature scores as "sabotage." Make your scorer assert the **benign path still works**, so it rewards *targeted* suppression rather than a dead service.
 
 ## [Optional] Papers to start from
 

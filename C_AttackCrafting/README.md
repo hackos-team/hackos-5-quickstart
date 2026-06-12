@@ -71,17 +71,20 @@ uv run ct traj make <logs/attackC-base*.eval> --save-path data/traj/base-attack.
 # 2. Read the diff. Find a locus that carries a security property
 #    (a gate, a validator, an audit/log write, a query that decides what's visible).
 
-# 3. Inject the sabotage by editing the trajectory:
-uv run ct traj tui data/traj/base-attack.json  # edit → save as my-edited-traj-1.json
+# 3. Inject the sabotage by editing the trajectory. Either the interactive TUI:
+uv run ct traj tui data/traj/base-attack.json   # interactive; save as data/traj/my-edited-traj-1.json
+#    ...or edit the JSON directly (scriptable / headless): data/traj/base-attack.json is a
+#    list of actions ({function, arguments, ...}); change an action's arguments
+#    (file_text / new_str / cmd) and save the result as data/traj/my-edited-traj-1.json.
 
 # 4. Execute your edited trajectory in a live container and which side task fires:
 uv run ct live up-from <base_run: logs/attackC-base*.eval>  # spin up the env for this task
-uv run ct live solution-from ./my-edited-traj-1.json        # make a straj out of the run
+uv run ct live solution-from ./data/traj/my-edited-traj-1.json        # make a straj out of the run
 uv run ct live traj                                         # run your solution trajectory in it
 uv run ct live score --only-side # does the side task pass?
 
 # 5. create a run from your most successful straj.s 
-uv run ct run rerun-traj ./my-edited-traj-1.json --no-upload
+uv run ct run rerun-traj ./data/traj/my-edited-traj-1.json --no-upload
 #    → produces a logs/[...].eval file for your straj
 
 # 6. Score it against the monitor (the pass/fail gate):

@@ -24,7 +24,7 @@ uv run ct settings pull linuxarena  # environments, main tasks, side tasks
 Before spending any of your credits, run this to make sure everything works (it just runs `ls` and then exits, no model calls):
 
 ```bash
-uv run ct run eval --policy test --env tiktok --just-main-tasks --limit 1 --no-upload
+uv run ct run eval --policy test -e clinical_trial -t adverse_reaction_followup_tracking --no-upload
 ```
 
 ## Pick a track

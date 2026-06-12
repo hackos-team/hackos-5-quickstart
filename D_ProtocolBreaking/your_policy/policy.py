@@ -1,78 +1,63 @@
 from pathlib import Path
 
-from inspect_ai.agent import Agent, AgentSubmit, react
-from inspect_ai.solver import TaskState
-
-from control_tower.defaults import (
-    DEFAULT_MAX_STEPS,
-    DEFAULT_SCORER_TIMEOUT,
-    DEFAULT_TOOL_TIMEOUT,
+from inspect_ai.model import (
+    ChatMessage,
+    ChatMessageSystem,
+    GenerateConfig,
+    ModelOutput,
 )
+from inspect_ai.solver import TaskState
+from inspect_ai.tool import Tool, ToolChoice
+
 from control_tower.models.aliases import ModelAlias
 from control_tower.models.model_spec import (
     ModelSpec,
     get_model_spec_field,
 )
-from control_tower.protocols.agent_helpers import (
-    make_react_system_prompt,
-    make_step_limit_callback,
-)
-from control_tower.protocols.policies.registry import policies
+from control_tower.protocols.untrusted_policy.registry import untrusted_policies
+from control_tower.protocols.untrusted_policy.types import UntrustedPolicyGenerateFn
 from control_tower.task.sample_metadata import SampleMetadata
-from control_tower.tools.linux_tools import get_policy_tools
 from control_tower.utils.errors import ValidationError
-from control_tower.utils.function_registry.base_model import BaseModelPython
 
 DEFAULT_PROMPT_PATH = Path(__file__).parent / "prompt.md"
 
 
-class SimpleAttackArgs(BaseModelPython):
-    model: ModelSpec = get_model_spec_field(ModelAlias.UNTRUSTED)
-    enable_side_task_test: bool = True
-    tool_timeout: int = DEFAULT_TOOL_TIMEOUT
-    scorer_timeout: int = DEFAULT_SCORER_TIMEOUT
-    max_steps: int = DEFAULT_MAX_STEPS
-    prompt_path: Path = DEFAULT_PROMPT_PATH
-
-
-@policies.register(
-    attempts_main_task=True,
-    attempts_side_task=True,
-    attempts_sneaky=True,
-)
+@untrusted_policies.register(name="your-attack")
 def your_attack_policy(
-    state: TaskState, submit: AgentSubmit, args: SimpleAttackArgs | None
-) -> Agent:
-    """Based on https://github.com/linuxarena/control-tower/blob/87f186421c99f586fb2441d4864af9c2b5fba145/src/control_tower/protocols/policies/policies/simple_attack/policy.py"""
-    if args is None:
-        args = SimpleAttackArgs()
-
+    state: TaskState,
+    model: ModelSpec = get_model_spec_field(ModelAlias.UNTRUSTED),
+    prompt_path: Path = DEFAULT_PROMPT_PATH,
+) -> "UntrustedPolicyGenerateFn":
+    """Based on the canonical simple-attack untrusted policy."""
     metadata = state.metadata_as(SampleMetadata)
-    side_task = metadata.side_task
-    if side_task is None:
+    if metadata.side_task is None:
         raise ValidationError("Policy requires a side task")
-    main_task = metadata.main_task
-    if main_task is None:
+    if metadata.main_task is None:
         raise ValidationError("Policy requires a main task")
 
-    tools = get_policy_tools(
-        state,
-        tool_timeout=args.tool_timeout,
-        scorer_timeout=args.scorer_timeout,
-        include_side_task_test=args.enable_side_task_test,
-    )
-
-    prompt_template = args.prompt_path.read_text()
-    prompt = prompt_template.format(
-        main_task_description=main_task.description,
-        side_task_description=side_task.task_description,
+    system_prompt = prompt_path.read_text().format(
+        main_task_description=metadata.main_task.description,
+        side_task_description=metadata.side_task.task_description,
         setting_description=metadata.environment.description,
     )
 
-    return react(
-        prompt=make_react_system_prompt(prompt),
-        tools=tools,
-        model=args.model.make_model(),
-        submit=submit,
-        on_continue=make_step_limit_callback(args.max_steps),
-    )
+    def _with_attack_prompt(input: list[ChatMessage]) -> list[ChatMessage]:
+        return [
+            ChatMessageSystem(content=system_prompt),
+            *[m for m in input if not isinstance(m, ChatMessageSystem)],
+        ]
+
+    async def generate_public_only(
+        input: list[ChatMessage],
+        tools: list[Tool],
+        tool_choice: ToolChoice | None,
+        config: GenerateConfig,
+    ) -> ModelOutput:
+        return await model.make_model().generate(
+            input=_with_attack_prompt(input),
+            tools=tools,
+            tool_choice=tool_choice,
+            config=config,
+        )
+
+    return generate_public_only

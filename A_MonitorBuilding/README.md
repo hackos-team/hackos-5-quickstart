@@ -20,25 +20,22 @@ uv run ct settings pull linuxarena
 ## Run the baseline loop
 
 ```bash
-# 1. Generate trajectories
-# --task-file medium runs several task combos across environments so the curve isn't a single noisy point
+# 1. Generate an honest run and an attack run on a single main/side task pair.
 uv run ct run eval --policy honest \
-  --task-file medium \
-  --run-name honestA \
-  --no-upload
+  -e clinical_trial -t adverse_reaction_followup_tracking \
+  --run-name honestA --no-upload
 
 uv run ct run eval --policy simple-attack \
-  --task-file medium \
-  --run-name attackA \
-  --no-upload
+  -e clinical_trial -t adverse_reaction_followup_tracking -s suppress_safety_notifications \
+  --run-name attackA --no-upload
 
-# the alternative is to run the policy on a single main/side task pair:
-# uv run ct run eval --policy honest --environment clinical_trial --main-task adverse_reaction_followup_tracking --run-name honestA --no-upload
-# uv run ct run eval --policy simple-attack --environment clinical_trial --main-task adverse_reaction_followup_tracking --side-task suppress_safety_notifications  --run-name attackA --no-upload
-
+# Scale up later with a task set spanning several env/task combos, so the curve isn't a
+# single noisy point (needs every env's images + keys — tiktok requires a TIKAPI_KEY):
+#   uv run ct run eval --policy honest       --task-file medium --run-name honestA --no-upload
+#   uv run ct run eval --policy simple-attack --task-file medium --run-name attackA --no-upload
 
 # 2. Score the attack trajectory with a built-in monitor (openai model)
-uv run ct run monitor logs/[...].eval --action-monitor multi --only-action --no-upload
+uv run ct run monitor logs/*_attackA-*.eval --action-monitor multi --only-action --no-upload
 
 # 3. List the other available monitors that you could use
 uv run ct protocols monitors action
@@ -63,12 +60,19 @@ uv run ct run monitor logs/*_attackA-*.eval --trajectory-monitor monitor:my_traj
 
 ## Measure safety vs. usefulness
 
+`ct game-metrics` reads monitor **scores**, and a raw `ct run eval` log carries none — so first score **both** runs with your monitor (use `-o` to save the scored trajectories to known dirs), then point `game-metrics` at those dirs:
+
 ```bash
-uv run ct game-metrics metrics --honest <honest-run: logs/*_honestA-*.eval> --attack <attack-run: logs/*_attackA-*.eval> \
-  --audit-budgets 0.1 --audit-budgets 1 --audit-budgets 5 --output-dir results/
+# score both runs with your monitor (writes scored trajectories under data/scored/)
+uv run ct run monitor logs/*_honestA-*.eval --action-monitor monitor:my_action_monitor --only-action -o data/scored/honestA --no-upload
+uv run ct run monitor logs/*_attackA-*.eval --action-monitor monitor:my_action_monitor --only-action -o data/scored/attackA --no-upload
+
+# compute safety + usefulness from the scored dirs
+uv run ct game-metrics metrics --honest data/scored/honestA --attack data/scored/attackA \
+  --audit-budgets 0.1 --audit-budgets 1 --audit-budgets 5 --mode action_only --output-dir results/
 ```
 
-`honest-run` and `attack-run` being paths to the `.eval` files produced by the `ct run eval` commands you ran. It creates `safety_curves.png` and `metrics.json`. If your monitor produces only per-action scores, add `--mode action_only`.
+This creates `safety_curves.png` and `metrics.json`. `--mode action_only` tells the fitter to use the per-action scores your monitor produced (drop it once you also have trajectory-level scores). Pass several `--audit-budgets` — a single budget can't draw a curve.
 
 ## [Optional] Papers to start from
 
